@@ -4,6 +4,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
+import { Link } from 'react-router-dom';
 
 import styles from './Header.module.scss';
 
@@ -57,7 +58,7 @@ const Component = () => {
     <div className={styles.root}>
       <Container maxWidth='xl'>
         <Toolbar className={styles.toolbar}>
-          <h1 className={styles.logo}>Garage Sales</h1>
+          <Link to='/' className={styles.logo}>Garage Sales</Link>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />

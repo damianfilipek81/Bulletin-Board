@@ -6,12 +6,12 @@ import clsx from 'clsx';
 import Grid from '@material-ui/core/Grid';
 import Pagination from '@material-ui/lab/Pagination';
 
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
+import { connect } from 'react-redux';
+import { getAll } from '../../../redux/postsRedux';
 
 import styles from './Homepage.module.scss';
 
-const Component = ({ className }) => (
+const Component = ({ className, postData }) => (
   <div className={clsx(className, styles.root)}>
     <div className={styles.wrapper}>
       <Grid container spacing={0} item xs={3}>
@@ -19,14 +19,9 @@ const Component = ({ className }) => (
       </Grid>
       <Grid container spacing={3} item xs={9}>
         <div className={styles.products}>
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
+          {postData.products.map(data => 
+            <PostCard key={data.id} {...data}/>
+          )}
         </div>
       </Grid>
     </div>
@@ -36,20 +31,21 @@ const Component = ({ className }) => (
 
 Component.propTypes = {
   className: PropTypes.string,
+  postData: PropTypes.object,
 };
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+const mapStateToProps = state => ({
+  postData: getAll(state),
+});
 
 // const mapDispatchToProps = dispatch => ({
 //   someAction: arg => dispatch(reduxActionCreator(arg)),
 // });
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+const Container = connect(mapStateToProps)(Component);
 
 export {
-  Component as Homepage,
-  // Container as Homepage,
+  // Component as Homepage,
+  Container as Homepage,
   Component as HomepageComponent,
 };

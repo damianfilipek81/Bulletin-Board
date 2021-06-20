@@ -1,7 +1,7 @@
 @import "../../../styles/settings.scss";
 
 .root {
-  background: rgb(5, 110, 5);
+  background: #2e6caf;
   height: 70px;
   position: fixed;
   width: 100%;
@@ -16,5 +16,6 @@
     margin: 0;
     font-size: 40px;
     color: 	rgb(255,215,0);
+    text-decoration: none;
   }
 }

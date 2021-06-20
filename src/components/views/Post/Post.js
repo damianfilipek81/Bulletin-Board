@@ -1,21 +1,24 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import clsx from 'clsx';
 // import { connect } from 'react-redux';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
 import styles from './Post.module.scss';
 
-const Component = ({ className }) => (
-  <div className={clsx(className, styles.root)}>
-   
+const Component = ({ classname }) => {
+  const { id } = useParams();
+  return (
+    <div className={styles.root}>
+      {console.log(id)}
 
-  </div>
-);
+    </div>
+  );
+};
 
 Component.propTypes = {
-  className: PropTypes.string,
+  classname: PropTypes.string,
 };
 
 // const mapStateToProps = state => ({
