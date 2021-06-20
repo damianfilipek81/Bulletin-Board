@@ -1,4 +1,20 @@
-@import '../../../styles/settings.scss';
+@import "../../../styles/settings.scss";
 
-// .root {
-// }
+.root {
+  background: rgb(5, 110, 5);
+  height: 70px;
+  position: fixed;
+  width: 100%;
+  z-index: 999;
+
+  .toolbar{
+    padding: 0;
+  }
+
+  .logo{
+    font-family: $logoFont;
+    margin: 0;
+    font-size: 40px;
+    color: 	rgb(255,215,0);
+  }
+}

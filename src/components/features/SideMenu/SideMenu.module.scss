@@ -1,0 +1,21 @@
+@import "../../../styles/settings.scss";
+
+.root {
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  
+  .contentWrapper {
+    margin-top: 90px;
+    padding: 0 10px;
+
+    label {
+      margin: 0;
+    }
+  }
+}
