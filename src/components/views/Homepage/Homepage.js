@@ -7,19 +7,19 @@ import Grid from '@material-ui/core/Grid';
 import Pagination from '@material-ui/lab/Pagination';
 
 import { connect } from 'react-redux';
-import { getAll } from '../../../redux/postsRedux';
+import { getFilteredCategories } from '../../../redux/postsRedux';
 
 import styles from './Homepage.module.scss';
 
-const Component = ({ className, postData }) => (
-  <div className={clsx(className, styles.root)}>
+const Component = ({ className, getFilteredCategories }) => (
+  <div className={clsx(className, styles.root)} {...console.log(getFilteredCategories)}>
     <div className={styles.wrapper}>
       <Grid container spacing={0} item xs={3}>
         <SideMenu />
       </Grid>
       <Grid container spacing={3} item xs={9}>
         <div className={styles.products}>
-          {postData.products.map(data => 
+          {getFilteredCategories.map(data => 
             <PostCard key={data.id} {...data}/>
           )}
         </div>
@@ -31,11 +31,11 @@ const Component = ({ className, postData }) => (
 
 Component.propTypes = {
   className: PropTypes.string,
-  postData: PropTypes.object,
+  getFilteredCategories: PropTypes.array,
 };
 
 const mapStateToProps = state => ({
-  postData: getAll(state),
+  getFilteredCategories: getFilteredCategories(state),
 });
 
 // const mapDispatchToProps = dispatch => ({

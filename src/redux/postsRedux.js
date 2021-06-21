@@ -1,5 +1,15 @@
 /* selectors */
 export const getAll = ({ posts }) => posts.data;
+export const getCategories = ({ posts }) => posts.data.products.map(data => data.categories[0]);
+export const getFilteredCategories = ({ posts }) => {
+  const { products, categories } = posts.data;
+
+  if (categories.length === 0) {
+    return products;
+  } else if (categories.length > 0) {
+    return products.filter(product => product.categories.every((category) => categories.includes(category)));
+  }
+};
 export const getPostData = ({ posts }, id) => posts.data.products.filter(data => data.id == id);
 
 /* action name creator */
@@ -11,12 +21,16 @@ const FETCH_START = createActionName('FETCH_START');
 const FETCH_SUCCESS = createActionName('FETCH_SUCCESS');
 const FETCH_ERROR = createActionName('FETCH_ERROR');
 const ADD_POST = createActionName('ADD_POST');
+const ADD_CATEGORY = createActionName('ADD_CATEGORY');
+const REMOVE_CATEGORY = createActionName('REMOVE_CATEGORY');
 
 /* action creators */
 export const fetchStarted = payload => ({ payload, type: FETCH_START });
 export const fetchSuccess = payload => ({ payload, type: FETCH_SUCCESS });
 export const fetchError = payload => ({ payload, type: FETCH_ERROR });
 export const addPost = payload => ({ payload, type: ADD_POST });
+export const addCategory = payload => ({ payload, type: ADD_CATEGORY });
+export const removeCategory = payload => ({ payload, type: REMOVE_CATEGORY });
 
 /* thunk creators */
 
@@ -30,6 +44,30 @@ export const reducer = (statePart = [], action = {}) => {
           products: [
             ...statePart.data.products, action.payload,
           ],
+        },
+      };
+    }
+    case ADD_CATEGORY: {
+      return {
+        ...statePart,
+        data: {
+          products: [
+            ...statePart.data.products,
+          ],
+          categories: [
+            ...statePart.data.categories, action.payload,
+          ],
+        },
+      };
+    }
+    case REMOVE_CATEGORY: {
+      return {
+        ...statePart,
+        data: {
+          products: [
+            ...statePart.data.products,
+          ],
+          categories: statePart.data.categories.filter(category => category !== action.payload),
         },
       };
     }

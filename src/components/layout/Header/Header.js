@@ -8,11 +8,12 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
 import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
 
 import styles from './Header.module.scss';
 
 import { connect } from 'react-redux';
-import { changeUser } from '../../../redux/usersRedux';
+import { changeUser, getAll } from '../../../redux/usersRedux';
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -54,8 +55,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-const Component = ({ changeUser }) => {
-  const [user, setUser] = useState('loggedOut');
+const Component = ({ changeUser, getUser }) => {
+  const [user, setUser] = useState('loggedIn');
   const classes = useStyles();
 
   const handleChangeUser = (e) => {
@@ -80,15 +81,18 @@ const Component = ({ changeUser }) => {
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>
-          <Select
-            native
-            value={user}
-            onChange={(e) => handleChangeUser(e)}
-          >
-            <option value={'loggedOut'}>Logged out</option>
-            <option value={'loggedIn'}>Logged in</option>
-            <option value={'admin'}>Admin</option>
-          </Select>
+          <div>
+            {(getUser.loggedIn === true || getUser.admin === true) && <Link to='/post/add' component={Button}>New post</Link>}
+            <Select
+              native
+              value={user}
+              onChange={(e) => handleChangeUser(e)}
+            >
+              <option value={'loggedOut'}>Logged out</option>
+              <option value={'loggedIn'}>Logged in</option>
+              <option value={'admin'}>Admin</option>
+            </Select>
+          </div>
         </Toolbar>
       </Container>
     </div >
@@ -97,20 +101,20 @@ const Component = ({ changeUser }) => {
 
 Component.propTypes = {
   changeUser: PropTypes.func,
+  getUser: PropTypes.object,
 };
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+const mapStateToProps = state => ({
+  getUser: getAll(state),
+});
 
 const mapDispatchToProps = dispatch => ({
   changeUser: arg => dispatch(changeUser(arg)),
 });
 
-const ContainerFunc = connect(null, mapDispatchToProps)(Component);
+const ContainerFunc = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
-  // Component as Header,
   ContainerFunc as Header,
   Component as HeaderComponent,
 };

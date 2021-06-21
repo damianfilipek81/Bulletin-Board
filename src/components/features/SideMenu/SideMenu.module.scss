@@ -13,7 +13,9 @@
   .contentWrapper {
     margin-top: 90px;
     padding: 0 10px;
-
+    display: flex;
+    flex-direction: column;
+    
     label {
       margin: 0;
     }

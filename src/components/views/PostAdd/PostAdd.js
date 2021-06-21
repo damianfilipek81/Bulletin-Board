@@ -15,13 +15,12 @@ import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 
 import { connect } from 'react-redux';
-import { addPost } from '../../../redux/postsRedux';
+import { addPost, getCategories } from '../../../redux/postsRedux';
 
 import styles from './PostAdd.module.scss';
 
-const Component = ({ addPost }) => {
+const Component = ({ addPost, getCategories }) => {
   const [categories, setCategories] = useState('');
-  const testCategories = ['asdads', '11111', 'bbbbb'];
 
   const date = () => {
     const date = new Date();
@@ -86,7 +85,7 @@ const Component = ({ addPost }) => {
             </Field>
             <Autocomplete
               multiple
-              options={testCategories.map((option) => option)}
+              options={getCategories.map((option) => option)}
               freeSolo
               renderTags={(value, getTagProps) => {
                 setCategories(value);
@@ -146,17 +145,18 @@ const Component = ({ addPost }) => {
 };
 Component.propTypes = {
   addPost: PropTypes.func,
+  getCategories: PropTypes.array,
 };
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+const mapStateToProps = state => ({
+  getCategories: [...new Set(getCategories(state))],
+});
 
 const mapDispatchToProps = dispatch => ({
   addPost: arg => dispatch(addPost(arg)),
 });
 
-const Container = connect(null, mapDispatchToProps)(Component);
+const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
   Container as PostAdd,
