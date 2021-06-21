@@ -16,4 +16,9 @@ export const initialState = {
       error: false,
     },
   },
+  users: {
+    loggedOut: true,
+    loggedIn: false,
+    admin: false,
+  },
 };
