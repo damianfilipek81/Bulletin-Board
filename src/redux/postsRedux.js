@@ -1,5 +1,6 @@
 /* selectors */
 export const getAll = ({posts}) => posts.data;
+export const getPostData = ({posts}, id) => posts.data.products.filter(data => data.id == id);
 
 /* action name creator */
 const reducerName = 'posts';

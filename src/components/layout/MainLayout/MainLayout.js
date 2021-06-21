@@ -13,7 +13,7 @@ import styles from './MainLayout.module.scss';
 const Component = ({ className, children }) => (
   <div className={clsx(className, styles.root)}>
     <Header />
-    <Container maxWidth='xl'>
+    <Container maxWidth='xl' className={styles.container}>
       {children}
     </Container>
   </div>
