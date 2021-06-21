@@ -39,7 +39,7 @@ Component.propTypes = {
   author: PropTypes.string,
   date: PropTypes.string,
   image: PropTypes.string,
-  id: PropTypes.number,
+  id: PropTypes.string,
 };
 
 // const mapStateToProps = state => ({
