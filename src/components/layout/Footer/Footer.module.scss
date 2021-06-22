@@ -1,0 +1,13 @@
+@import '../../../styles/settings.scss';
+
+.root {
+  height: 70px;
+  background: rgb(65, 65, 65);
+  position: relative;
+
+  h5{
+    text-align: center;
+    color: #fff;
+    line-height: 70px;
+  }
+}
