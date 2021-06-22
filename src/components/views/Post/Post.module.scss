@@ -5,6 +5,13 @@
   padding: 10px;
   display: flex;
   justify-content: space-around;
+  position: relative;
+
+  .editButton{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
 
   .imageWrapper {
     height: 500px;

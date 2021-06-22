@@ -20,4 +20,13 @@
     color: 	rgb(255,215,0);
     text-decoration: none;
   }
+
+  .wrapper{
+    flex: 0 0 33.333%;
+  }
+
+  .wrapper:last-of-type{
+    display: flex;
+    justify-content: flex-end;
+  }
 }

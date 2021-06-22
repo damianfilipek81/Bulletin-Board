@@ -21,6 +21,7 @@ export const reducer = (statePart = [], action = {}) => {
             loggedOut: false,
             loggedIn: false,
             admin: true,
+            email: statePart.email,
           };
         }
         case 'loggedIn': {
@@ -28,6 +29,7 @@ export const reducer = (statePart = [], action = {}) => {
             loggedOut: false,
             loggedIn: true,
             admin: false,
+            email: statePart.email,
           };
         }
         case 'loggedOut': {
@@ -35,6 +37,7 @@ export const reducer = (statePart = [], action = {}) => {
             loggedOut: true,
             loggedIn: false,
             admin: false,
+            email: statePart.email,
           };
         }
         default:

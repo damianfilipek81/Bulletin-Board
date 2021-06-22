@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
@@ -43,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -55,6 +55,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+
+
 const Component = ({ changeUser, getUser }) => {
   const [user, setUser] = useState('loggedIn');
   const classes = useStyles();
@@ -63,12 +65,16 @@ const Component = ({ changeUser, getUser }) => {
     setUser(e.target.value);
     changeUser(e.target.value);
   };
+
+  
   return (
     <div className={styles.root}>
       <Container maxWidth='xl'>
         <Toolbar className={styles.toolbar}>
-          <Link to='/' className={styles.logo}>Garage Sales</Link>
-          <div className={classes.search}>
+          <div className={styles.wrapper}>
+            <Link to='/' className={styles.logo}>Garage Sales</Link>
+          </div>
+          <div className={clsx(classes.search, styles.wrapper)}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -81,7 +87,7 @@ const Component = ({ changeUser, getUser }) => {
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>
-          <div>
+          <div className={styles.wrapper}>
             {(getUser.loggedIn === true || getUser.admin === true) && <Link to='/post/add' component={Button}>New post</Link>}
             <Select
               native

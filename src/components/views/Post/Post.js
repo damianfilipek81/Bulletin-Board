@@ -3,13 +3,18 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import { getPostData } from '../../../redux/postsRedux';
+import { getAll } from '../../../redux/usersRedux';
+import { Link } from 'react-router-dom';
+
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import Button from '@material-ui/core/Button';
 
 import styles from './Post.module.scss';
 
-const Component = ({ post }) => {
-  const { image, title, author, price, date, description } = post[0];
+const Component = ({ post, user }) => {
+  const { image, title, author, price, date, description, email, id } = post[0];
+  const { admin, loggedIn } = user;
 
   return (
     <div className={styles.root}>
@@ -34,16 +39,19 @@ const Component = ({ post }) => {
           <p>{description}</p>
         </div>
       </div>
+      {((loggedIn && user.email === email) || admin) && <Link component={Button}  to={`/post/${id}/edit`} color="secondary" className={styles.editButton}>Edit post</Link>}
     </div>
   );
 };
 
 Component.propTypes = {
   post: PropTypes.array,
+  user: PropTypes.object,
 };
 
 const mapStateToProps = (state, props) => ({
   post: getPostData(state, props.match.params.id),
+  user: getAll(state),
 });
 
 // const mapDispatchToProps = dispatch => ({

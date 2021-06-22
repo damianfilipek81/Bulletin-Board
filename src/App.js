@@ -33,8 +33,8 @@ const App = ({ getUser }) => {
             <Switch>
               <Route exact path='/' component={Homepage} />
               <Route exact path='/post/add' component={admin === true || loggedIn === true ? PostAdd : NotFound} />
-              <Route exact path='/post/:id' component={admin === true || loggedIn === true ? Post : NotFound} />
-              <Route exact path='/post/:id/edit' component={admin === true || loggedIn === true ? PostEdit : NotFound} />
+              <Route exact path='/post/:id' component={Post} />
+              <Route exact path='/post/:id/edit' component={admin === true || loggedIn === true? PostEdit : NotFound} />
               <Route path='*' component={NotFound} />
             </Switch>
           </MainLayout>

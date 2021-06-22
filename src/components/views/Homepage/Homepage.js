@@ -12,7 +12,7 @@ import { getFilteredCategories } from '../../../redux/postsRedux';
 import styles from './Homepage.module.scss';
 
 const Component = ({ className, getFilteredCategories }) => (
-  <div className={clsx(className, styles.root)} {...console.log(getFilteredCategories)}>
+  <div className={clsx(className, styles.root)}>
     <div className={styles.wrapper}>
       <Grid container spacing={0} item xs={3}>
         <SideMenu />
