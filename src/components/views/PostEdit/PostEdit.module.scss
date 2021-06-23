@@ -60,6 +60,26 @@
 
     .descriptionWrapper{
       display: block;
+      text-align: center;
+
+      p{
+        text-align: left;
+      }
+      .dropdown{
+        border-radius: 0%;
+      }
+
+      .contact{
+        display: flex;
+        margin-top: 10px;
+        justify-content: center;
+
+        h4{
+          margin: 0;
+          margin-bottom: 5px;
+          margin-left: 5px;
+        }
+      }
     }
   }
 }

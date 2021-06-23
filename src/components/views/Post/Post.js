@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
@@ -7,14 +7,21 @@ import { getAll } from '../../../redux/usersRedux';
 import { Link } from 'react-router-dom';
 
 import IconButton from '@material-ui/core/IconButton';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Button from '@material-ui/core/Button';
+import Collapse from '@material-ui/core/Collapse';
 
 import styles from './Post.module.scss';
 
 const Component = ({ post, user }) => {
-  const { image, title, author, price, date, description, email, id } = post[0];
+  const { image, title, author, price, date, description, email, id, tel } = post[0];
   const { admin, loggedIn } = user;
+  const [dropdownOn, setDropdownOn] = useState(false);
+
+  const handleSetDropdownOn = () => {
+    setDropdownOn(!dropdownOn);
+  };
 
   return (
     <div className={styles.root}>
@@ -37,9 +44,20 @@ const Component = ({ post, user }) => {
         </div>
         <div className={styles.descriptionWrapper}>
           <p>{description}</p>
+          <IconButton
+            onClick={handleSetDropdownOn}
+            className={styles.dropdown}
+          >
+            CONTACT
+            <ExpandMoreIcon />
+          </IconButton>
+          <Collapse in={dropdownOn} timeout="auto" unmountOnExit className={styles.contact}>
+            <h4>Tel: {tel}</h4>
+            <h4>Email: {email}</h4>
+          </Collapse>
         </div>
       </div>
-      {((loggedIn && user.email === email) || admin) && <Link component={Button}  to={`/post/${id}/edit`} color="secondary" className={styles.editButton}>Edit post</Link>}
+      {((loggedIn && user.email === email) || admin) && <Link component={Button} to={`/post/${id}/edit`} color="secondary" className={styles.editButton}>Edit post</Link>}
     </div>
   );
 };

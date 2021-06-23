@@ -23,6 +23,7 @@ const FETCH_ERROR = createActionName('FETCH_ERROR');
 const ADD_POST = createActionName('ADD_POST');
 const ADD_CATEGORY = createActionName('ADD_CATEGORY');
 const REMOVE_CATEGORY = createActionName('REMOVE_CATEGORY');
+const EDIT_POST = createActionName('EDIT_POST');
 
 /* action creators */
 export const fetchStarted = payload => ({ payload, type: FETCH_START });
@@ -31,6 +32,7 @@ export const fetchError = payload => ({ payload, type: FETCH_ERROR });
 export const addPost = payload => ({ payload, type: ADD_POST });
 export const addCategory = payload => ({ payload, type: ADD_CATEGORY });
 export const removeCategory = payload => ({ payload, type: REMOVE_CATEGORY });
+export const editPost = payload => ({ payload, type: EDIT_POST });
 
 /* thunk creators */
 
@@ -43,6 +45,23 @@ export const reducer = (statePart = [], action = {}) => {
         data: {
           products: [
             ...statePart.data.products, action.payload,
+          ],
+        },
+      };
+    }
+    case EDIT_POST: {
+      return {
+        ...statePart,
+        data: {
+          products: [
+            ...statePart.data.products.map((data) => {
+              if(data.id === action.payload.id){
+                return action.payload;
+              }
+              else{
+                return data;
+              }
+            }),
           ],
         },
       };
