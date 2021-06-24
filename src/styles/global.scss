@@ -3,4 +3,11 @@
 body{
   background-color: rgb(243, 243, 243);
   font-family: $font;
+  padding: 0 !important;
+  overflow: auto !important;
+
+  a{
+    text-decoration: none;
+    color: inherit;
+  }
 }

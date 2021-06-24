@@ -13,11 +13,12 @@ import TextField from '@material-ui/core/TextField';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
 import InputAdornment from '@material-ui/core/InputAdornment';
-
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 import styles from './PostEdit.module.scss';
 
 const Component = ({ post, editPost }) => {
-  const { image, title, author, price, date, description, email, id, tel, categories } = post[0];
+  const { image, title, author, price, creationDate, description, email, id, tel, categories, status } = post[0];
   const [dropdownOn, setDropdownOn] = useState(false);
 
   const handleSetDropdownOn = () => {
@@ -30,7 +31,7 @@ const Component = ({ post, editPost }) => {
   };
 
   const onSubmit = (values) => {
-    const { title, description, email, price, phone } = values;
+    const { title, description, email, price, phone, status } = values;
 
     const output = {
       id,
@@ -41,7 +42,8 @@ const Component = ({ post, editPost }) => {
       price,
       phone,
       categories,
-      date: date,
+      creationDate,
+      status,
       editDate: editDate(),
       image: 'https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
     };
@@ -81,7 +83,25 @@ const Component = ({ post, editPost }) => {
                 </Field>
               </div>
               <div className={styles.favoritesWrapper}>
-                <h4>Creation date {date}</h4>
+                <h4>Creation date {creationDate}</h4>
+                <Field name='status' defaultValue={status}>
+                  {props => {
+                    const { name, value, onChange } = props.input;
+                    return <Select
+                      labelId="demo-simple-select-helper-label"
+                      id="demo-simple-select-helper"
+                      value={value}
+                      onChange={onChange}
+                      name={name}
+                      label='Status'
+                    >
+                      <MenuItem value={'draft'}>Draft</MenuItem>
+                      <MenuItem value={'published'}>Published</MenuItem>
+                      <MenuItem value={'closed'}>Closed</MenuItem>
+                    </Select>;
+                  }
+                  }
+                </Field>
                 <IconButton aria-label="add to favorites">
                   <FavoriteIcon />
                 </IconButton>

@@ -7,6 +7,8 @@ import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import styles from './Header.module.scss';
 
@@ -15,13 +17,22 @@ import { changeUser, getAll } from '../../../redux/usersRedux';
 
 const Component = ({ changeUser, getUser }) => {
   const [user, setUser] = useState('loggedIn');
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleChangeUser = (e) => {
     setUser(e.target.value);
     changeUser(e.target.value);
   };
 
-  
+
   return (
     <div className={styles.root}>
       <Container maxWidth='xl'>
@@ -31,7 +42,6 @@ const Component = ({ changeUser, getUser }) => {
           </div>
           <SearchBar />
           <div className={styles.wrapper}>
-            {(getUser.loggedIn === true || getUser.admin === true) && <Link to='/post/add' component={Button}>New post</Link>}
             <Select
               native
               value={user}
@@ -41,7 +51,29 @@ const Component = ({ changeUser, getUser }) => {
               <option value={'loggedIn'}>Logged in</option>
               <option value={'admin'}>Admin</option>
             </Select>
+            {(getUser.loggedIn === true || getUser.admin === true) ?
+              <div>
+                <Button variant="contained" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+                  Menu
+                </Button>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                  autoFocus={false}
+                >
+                  {(getUser.loggedIn === true || getUser.admin === true) && <MenuItem><Link to='/post/add' onClick={handleClose}>New post</Link></MenuItem>}
+                  {(getUser.loggedIn === true || getUser.admin === true) && <MenuItem><Link to={`/posts/my-posts`} onClick={handleClose}>My posts</Link></MenuItem>}
+                  {(getUser.loggedIn === true || getUser.admin === true) && <MenuItem><Link to={`/`} onClick={handleClose}>Logout</Link></MenuItem>}
+                </Menu>
+              </div>
+              :
+              <Link variant="contained" component={Button} to={{ pathname: 'https://google.com' }} target="_blank">Login</Link>
+            }
           </div>
+
         </Toolbar>
       </Container>
     </div >

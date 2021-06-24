@@ -12,6 +12,10 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 import { connect } from 'react-redux';
 import { addPost, getCategories } from '../../../redux/postsRedux';
@@ -27,7 +31,7 @@ const Component = ({ addPost, getCategories }) => {
   };
 
   const onSubmit = (values) => {
-    const { title, author, description, email, price, phone } = values;
+    const { title, author, description, email, price, phone, status } = values;
 
     const output = {
       id: uuidv4(),
@@ -38,7 +42,9 @@ const Component = ({ addPost, getCategories }) => {
       price,
       phone,
       categories,
-      date: date(),
+      creationDate: date(),
+      editDate: date(),
+      status,
       image: 'https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
     };
 
@@ -106,6 +112,27 @@ const Component = ({ addPost, getCategories }) => {
               }
               }
             </Field>
+            <Field name='status' validate={required}>
+              {props => {
+                const { name, value, onChange } = props.input;
+                return <FormControl variant="outlined">
+                  <InputLabel id="demo-simple-select-helper-label">Status</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-helper-label"
+                    id="demo-simple-select-helper"
+                    value={value}
+                    onChange={onChange}
+                    name={name}
+                    label='Status'
+                  >
+                    <MenuItem value={'draft'}>Draft</MenuItem>
+                    <MenuItem value={'published'}>Published</MenuItem>
+                    <MenuItem value={'closed'}>Closed</MenuItem>
+                  </Select>
+                </FormControl>;
+              }
+              }
+            </Field>
             <Field name='description' validate={required}>
               {props => {
                 const { name, value, onChange } = props.input;
@@ -122,7 +149,7 @@ const Component = ({ addPost, getCategories }) => {
               }
             </Field>
             <div className={styles.buttons}>
-              <input accept="image/*" className={styles.input} id="8" type="file" />
+              <input accept="image/*" className={styles.input} id="icon-button-file" type="file" />
               <label htmlFor="icon-button-file">
                 <IconButton color="primary" aria-label="upload picture" component="span">
                   <PhotoCamera />

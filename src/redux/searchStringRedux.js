@@ -4,8 +4,8 @@
 export const getSearchString = (state) => state.searchString;
 
 export const getPostsForSearchResults = (state, searchString) =>
-  state.posts.data.products.filter((post) => searchString !== '' &&
-    new RegExp(searchString, 'i').test(post.title)
+  state.posts.data.products.filter(post => searchString !== '' &&
+    new RegExp(searchString, 'i').test(post.title) && post.status === 'published'
   );
 
 

@@ -15,7 +15,7 @@ import Collapse from '@material-ui/core/Collapse';
 import styles from './Post.module.scss';
 
 const Component = ({ post, user }) => {
-  const { image, title, author, price, date, description, email, id, tel } = post[0];
+  const { image, title, author, price, creationDate, editDate, description, email, id, tel } = post[0];
   const { admin, loggedIn } = user;
   const [dropdownOn, setDropdownOn] = useState(false);
 
@@ -36,7 +36,8 @@ const Component = ({ post, user }) => {
             <h2>{price} $</h2>
           </div>
           <div className={styles.favoritesWrapper}>
-            <h4>Creation date {date}</h4>
+            <h4>Creation date {creationDate}</h4>
+            <h4>Edit date {editDate}</h4>
             <IconButton aria-label="add to favorites">
               <FavoriteIcon />
             </IconButton>

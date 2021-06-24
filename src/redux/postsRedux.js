@@ -5,12 +5,12 @@ export const getFilteredCategories = ({ posts }) => {
   const { products, categories } = posts.data;
 
   if (categories.length === 0) {
-    return products;
+    return products.filter(product => product.status === 'published');
   } else if (categories.length > 0) {
-    return products.filter(product => product.categories.every((category) => categories.includes(category)));
+    return products.filter(product => product.categories.every((category) => categories.includes(category)) && product.status === 'published');
   }
 };
-export const getPostData = ({ posts }, id) => posts.data.products.filter(data => data.id == id);
+export const getPostData = ({ posts }, id) => posts.data.products.filter(data => data.id === id);
 
 /* action name creator */
 const reducerName = 'posts';
