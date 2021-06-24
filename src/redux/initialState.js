@@ -23,4 +23,5 @@ export const initialState = {
     admin: false,
     email: 'damianfilipek@gmail.com',
   },
+  searchString: '',
 };

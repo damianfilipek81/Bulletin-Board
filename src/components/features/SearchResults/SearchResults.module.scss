@@ -1,0 +1,55 @@
+@import "../../../styles/settings.scss";
+
+.root {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  padding-left: 8px;
+  max-height: 200px;
+  overflow: auto;
+
+  .wrapper {
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    
+    &:hover{
+      background: rgb(216, 216, 216);
+    }
+    .imageWrapper {
+      width: 100px;
+      height: 100px;
+
+      img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .infoWrapper{
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      .leftInfo {
+        h4{
+          margin: 5px;
+        }
+      }
+  
+      .rightInfo {
+        display: flex;
+        align-items: center;
+        
+        h4{
+          padding-right: 10px;
+        }
+      }
+    }
+  }
+}
