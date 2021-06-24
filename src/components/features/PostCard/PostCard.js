@@ -10,8 +10,8 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 
 import styles from './PostCard.module.scss';
 
-const Component = ({ title, price, author, date, image, id }) => (
-  <Link to={`/post/${id}`} component={CardActionArea}>
+const Component = ({ title, price, author, date, image, _id }) => (
+  <Link to={`/post/${_id}`} component={CardActionArea}>
     <div className={styles.root}>
       <div className={styles.imageWrapper}>
         <img src={image} alt=''></img>
@@ -39,7 +39,7 @@ Component.propTypes = {
   author: PropTypes.string,
   date: PropTypes.string,
   image: PropTypes.string,
-  id: PropTypes.string,
+  _id: PropTypes.string,
 };
 
 // const mapStateToProps = state => ({

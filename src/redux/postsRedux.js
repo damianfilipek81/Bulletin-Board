@@ -1,3 +1,5 @@
+import Axios from 'axios';
+
 /* selectors */
 export const getAll = ({ posts }) => posts.data;
 export const getCategories = ({ posts }) => posts.data.products.map(data => data.categories[0]);
@@ -10,7 +12,7 @@ export const getFilteredCategories = ({ posts }) => {
     return products.filter(product => product.categories.every((category) => categories.includes(category)) && product.status === 'published');
   }
 };
-export const getPostData = ({ posts }, id) => posts.data.products.filter(data => data.id === id);
+export const getPostData = ({ posts }, id) => posts.data.products.filter(data => data.id === id)[0];
 
 /* action name creator */
 const reducerName = 'posts';
@@ -24,6 +26,7 @@ const ADD_POST = createActionName('ADD_POST');
 const ADD_CATEGORY = createActionName('ADD_CATEGORY');
 const REMOVE_CATEGORY = createActionName('REMOVE_CATEGORY');
 const EDIT_POST = createActionName('EDIT_POST');
+const FETCH_ONE_POST = createActionName('FETCH_ONE_POST');
 
 /* action creators */
 export const fetchStarted = payload => ({ payload, type: FETCH_START });
@@ -33,8 +36,41 @@ export const addPost = payload => ({ payload, type: ADD_POST });
 export const addCategory = payload => ({ payload, type: ADD_CATEGORY });
 export const removeCategory = payload => ({ payload, type: REMOVE_CATEGORY });
 export const editPost = payload => ({ payload, type: EDIT_POST });
+export const fetchOnePost = payload => ({ payload, type: FETCH_ONE_POST });
 
 /* thunk creators */
+export const fetchPublished = () => {
+  return (dispatch, getState) => {
+    if (getState().posts.data.products.length < 1 && getState().posts.loading.active === false) {
+      dispatch(fetchStarted());
+
+      Axios
+        .get('http://localhost:8000/api/posts')
+        .then(res => {
+          dispatch(fetchSuccess(res.data));
+        })
+        .catch(err => {
+          dispatch(fetchError(err.message || true));
+        });
+    }
+  };
+};
+
+export const fetchPost = (id) => {
+  return (dispatch, getState) => {
+    dispatch(fetchStarted());
+    // if (getState().posts.data.onePost.length < 1 && getState().posts.loading.active === false) {
+    Axios
+      .get(`http://localhost:8000/api/posts/${id}`)
+      .then(res => {
+        dispatch(fetchOnePost(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchError(err.message || true));
+      });
+    // }
+  };
+};
 
 /* reducer */
 export const reducer = (statePart = [], action = {}) => {
@@ -55,10 +91,10 @@ export const reducer = (statePart = [], action = {}) => {
         data: {
           products: [
             ...statePart.data.products.map((data) => {
-              if(data.id === action.payload.id){
+              if (data.id === action.payload.id) {
                 return action.payload;
               }
-              else{
+              else {
                 return data;
               }
             }),
@@ -106,7 +142,22 @@ export const reducer = (statePart = [], action = {}) => {
           active: false,
           error: false,
         },
-        data: action.payload,
+        data: {
+          products: action.payload,
+          categories: [],
+        },
+      };
+    }
+    case FETCH_ONE_POST: {
+      return {
+        ...statePart,
+        loading: {
+          active: false,
+          error: false,
+        },
+        data: {
+          onePost: action.payload,
+        },
       };
     }
     case FETCH_ERROR: {

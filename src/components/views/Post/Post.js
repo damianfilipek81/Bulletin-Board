@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import { getPostData } from '../../../redux/postsRedux';
+import { getPostData, fetchPublished } from '../../../redux/postsRedux';
 import { getAll } from '../../../redux/usersRedux';
 import { Link } from 'react-router-dom';
 
@@ -14,8 +14,11 @@ import Collapse from '@material-ui/core/Collapse';
 
 import styles from './Post.module.scss';
 
-const Component = ({ post, user }) => {
-  const { image, title, author, price, creationDate, editDate, description, email, id, tel } = post[0];
+const Component = ({ post, user, fetchPublished }) => {
+  useEffect(() => {
+    fetchPublished();
+  });
+  const { image, title, author, price, creationDate, editDate, description, email, id, tel } = post;
   const { admin, loggedIn } = user;
   const [dropdownOn, setDropdownOn] = useState(false);
 
@@ -66,6 +69,7 @@ const Component = ({ post, user }) => {
 Component.propTypes = {
   post: PropTypes.array,
   user: PropTypes.object,
+  fetchPublished: PropTypes.func,
 };
 
 const mapStateToProps = (state, props) => ({
@@ -73,11 +77,11 @@ const mapStateToProps = (state, props) => ({
   user: getAll(state),
 });
 
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
+const mapDispatchToProps = (dispatch, props) => ({
+  fetchPublished: () => dispatch(fetchPublished()),
+});
 
-const Container = connect(mapStateToProps)(Component);
+const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
   Container as Post,
