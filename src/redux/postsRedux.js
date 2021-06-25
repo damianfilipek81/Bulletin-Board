@@ -143,6 +143,7 @@ export const reducer = (statePart = [], action = {}) => {
         data: {
           products: action.payload,
           categories: [],
+          onePost: {},
         },
       };
     }

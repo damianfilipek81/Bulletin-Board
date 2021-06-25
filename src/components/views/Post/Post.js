@@ -18,7 +18,7 @@ const Component = ({ post, user, fetchPost }) => {
 
   useEffect(() => {
     fetchPost();
-  });
+  }, []);
 
   const [dropdownOn, setDropdownOn] = useState(false);
   const handleSetDropdownOn = () => {

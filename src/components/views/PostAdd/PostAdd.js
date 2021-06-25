@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Form as FormField, Field } from 'react-final-form';
 
@@ -23,7 +23,6 @@ import { addPost, getCategories } from '../../../redux/postsRedux';
 import styles from './PostAdd.module.scss';
 
 const Component = ({ addPost, getCategories }) => {
-  const [categories, setCategories] = useState('');
 
   const date = () => {
     const date = new Date();
@@ -31,7 +30,7 @@ const Component = ({ addPost, getCategories }) => {
   };
 
   const onSubmit = (values) => {
-    const { title, author, description, email, price, phone, status } = values;
+    const { title, author, description, email, price, phone, status, categories } = values;
 
     const output = {
       id: uuidv4(),
@@ -47,7 +46,6 @@ const Component = ({ addPost, getCategories }) => {
       status,
       image: 'https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
     };
-
     return addPost(output);
   };
   const required = value => (value ? undefined : 'Required');
@@ -88,20 +86,28 @@ const Component = ({ addPost, getCategories }) => {
               }
               }
             </Field>
-            <Autocomplete
-              multiple
-              options={getCategories.map((option) => option)}
-              freeSolo
-              renderTags={(value, getTagProps) => {
-                setCategories(value);
-                return value.map((option, index) => (
-                  <Chip key={index} variant="outlined" label={option} {...getTagProps({ index })} />
-                ));
+            <Field name='categories'>
+              {props => {
+                const { name, value, onChange } = props.input;
+                return (
+                  <Autocomplete
+                    multiple
+                    options={getCategories.map((option) => option)}
+                    freeSolo
+                    renderTags={(_, getTagProps) => {
+                      return value && value.map((option, index) => (
+                        <Chip key={index} variant="outlined" label={option} {...getTagProps({ index })} />
+                      ));
+                    }}
+                    name={name}
+                    onChange={(_, value) => onChange(value)}
+                    renderInput={(params) => (
+                      <TextField {...params} variant="outlined" label="Categories" placeholder="Categories" />
+                    )}
+                  />
+                );
               }}
-              renderInput={(params) => (
-                <TextField {...params} variant="outlined" label="Categories" placeholder="Categories" />
-              )}
-            />
+            </Field>
             <Field name='price' validate={required}>
               {props => {
                 const { name, value, onChange } = props.input;
