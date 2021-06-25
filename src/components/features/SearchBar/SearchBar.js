@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 
 import InputBase from '@material-ui/core/InputBase';
@@ -8,6 +8,7 @@ import { SearchResults } from '../SearchResults/SearchResults';
 
 import { connect } from 'react-redux';
 import { changeSearchString, getSearchString, getPostsForSearchResults } from '../../../redux/searchStringRedux';
+import {fetchPublished } from '../../../redux/postsRedux';
 
 import styles from './SearchBar.module.scss';
 
@@ -51,7 +52,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Component = ({ changeSearchString, results }) => {
+const Component = ({ changeSearchString, results, fetchPublishedPosts }) => {
+
+  useEffect(()=>{
+    fetchPublishedPosts();
+  });
+
   const classes = useStyles();
   return (
     <div className={styles.root}>
@@ -78,6 +84,8 @@ Component.propTypes = {
   searchString: PropTypes.string,
   changeSearchString: PropTypes.func,
   results: PropTypes.array,
+  fetchPublishedPosts: PropTypes.func,
+
 };
 
 const mapStateToProps = state => ({
@@ -87,6 +95,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   changeSearchString: arg => dispatch(changeSearchString(arg)),
+  fetchPublishedPosts: () => dispatch(fetchPublished()),
 });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);

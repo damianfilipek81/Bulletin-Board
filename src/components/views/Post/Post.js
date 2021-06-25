@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import { getPostData, fetchPublished } from '../../../redux/postsRedux';
+import { fetchPost, getOnePostData } from '../../../redux/postsRedux';
 import { getAll } from '../../../redux/usersRedux';
 import { Link } from 'react-router-dom';
 
@@ -14,18 +14,19 @@ import Collapse from '@material-ui/core/Collapse';
 
 import styles from './Post.module.scss';
 
-const Component = ({ post, user, fetchPublished }) => {
-  useEffect(() => {
-    fetchPublished();
-  });
-  const { image, title, author, price, creationDate, editDate, description, email, id, tel } = post;
-  const { admin, loggedIn } = user;
-  const [dropdownOn, setDropdownOn] = useState(false);
+const Component = ({ post, user, fetchPost }) => {
 
+  useEffect(() => {
+    fetchPost();
+  });
+
+  const [dropdownOn, setDropdownOn] = useState(false);
   const handleSetDropdownOn = () => {
     setDropdownOn(!dropdownOn);
   };
 
+  const { image, title, author, price, creationDate, editDate, description, email, id, tel } = post;
+  const { admin, loggedIn } = user;
   return (
     <div className={styles.root}>
       <div className={styles.imageWrapper}>
@@ -67,18 +68,18 @@ const Component = ({ post, user, fetchPublished }) => {
 };
 
 Component.propTypes = {
-  post: PropTypes.array,
+  fetchPost: PropTypes.func,
+  post: PropTypes.object,
   user: PropTypes.object,
-  fetchPublished: PropTypes.func,
 };
 
-const mapStateToProps = (state, props) => ({
-  post: getPostData(state, props.match.params.id),
+const mapStateToProps = (state) => ({
+  post: getOnePostData(state),
   user: getAll(state),
 });
 
 const mapDispatchToProps = (dispatch, props) => ({
-  fetchPublished: () => dispatch(fetchPublished()),
+  fetchPost: () => dispatch(fetchPost(props.match.params.id)),
 });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);

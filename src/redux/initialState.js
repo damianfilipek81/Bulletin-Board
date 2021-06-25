@@ -3,7 +3,7 @@ export const initialState = {
     data: {
       products: [],
       categories: [],
-      onePost: [],
+      onePost: {},
     },
     loading: {
       active: false,

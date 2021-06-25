@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Form as FormField, Field } from 'react-final-form';
 
 import { connect } from 'react-redux';
-import { getPostData, editPost } from '../../../redux/postsRedux';
+import { getOnePostData, editPost } from '../../../redux/postsRedux';
 
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -18,7 +18,7 @@ import Select from '@material-ui/core/Select';
 import styles from './PostEdit.module.scss';
 
 const Component = ({ post, editPost }) => {
-  const { image, title, author, price, creationDate, description, email, id, tel, categories, status } = post[0];
+  const { image, title, author, price, creationDate, description, email, id, tel, categories, status } = post;
   const [dropdownOn, setDropdownOn] = useState(false);
 
   const handleSetDropdownOn = () => {
@@ -148,12 +148,12 @@ const Component = ({ post, editPost }) => {
 };
 
 Component.propTypes = {
-  post: PropTypes.array,
+  post: PropTypes.object,
   editPost: PropTypes.func,
 };
 
 const mapStateToProps = (state, props) => ({
-  post: getPostData(state, props.match.params.id),
+  post: getOnePostData(state),
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -12,7 +12,7 @@ export const getFilteredCategories = ({ posts }) => {
     return products.filter(product => product.categories.every((category) => categories.includes(category)) && product.status === 'published');
   }
 };
-export const getPostData = ({ posts }, id) => posts.data.products.filter(data => data.id === id)[0];
+export const getOnePostData = ({ posts }) => posts.data.onePost;
 
 /* action name creator */
 const reducerName = 'posts';
@@ -59,7 +59,6 @@ export const fetchPublished = () => {
 export const fetchPost = (id) => {
   return (dispatch, getState) => {
     dispatch(fetchStarted());
-    // if (getState().posts.data.onePost.length < 1 && getState().posts.loading.active === false) {
     Axios
       .get(`http://localhost:8000/api/posts/${id}`)
       .then(res => {
@@ -68,7 +67,6 @@ export const fetchPost = (id) => {
       .catch(err => {
         dispatch(fetchError(err.message || true));
       });
-    // }
   };
 };
 
@@ -156,6 +154,7 @@ export const reducer = (statePart = [], action = {}) => {
           error: false,
         },
         data: {
+          ...statePart.data,
           onePost: action.payload,
         },
       };

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { PostCard } from '../../features/PostCard/PostCard';
 import { SideMenu } from '../../features/SideMenu/SideMenu';
@@ -7,14 +7,11 @@ import Grid from '@material-ui/core/Grid';
 import Pagination from '@material-ui/lab/Pagination';
 
 import { connect } from 'react-redux';
-import { getFilteredCategories, fetchPublished } from '../../../redux/postsRedux';
+import { getFilteredCategories } from '../../../redux/postsRedux';
 
 import styles from './Homepage.module.scss';
 
-const Component = ({ className, getFilteredCategories, fetchPublishedPosts }) => {
-  useEffect(()=>{
-    fetchPublishedPosts();
-  });
+const Component = ({ className, getFilteredCategories }) => {
 
   return (
     <div className={clsx(className, styles.root)}>
@@ -37,21 +34,15 @@ const Component = ({ className, getFilteredCategories, fetchPublishedPosts }) =>
 Component.propTypes = {
   className: PropTypes.string,
   getFilteredCategories: PropTypes.array,
-  fetchPublishedPosts: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
   getFilteredCategories: getFilteredCategories(state),
 });
 
-const mapDispatchToProps = dispatch => ({
-  fetchPublishedPosts: () => dispatch(fetchPublished()),
-});
-
-const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+const Container = connect(mapStateToProps)(Component);
 
 export {
-  // Component as Homepage,
   Container as Homepage,
   Component as HomepageComponent,
 };
