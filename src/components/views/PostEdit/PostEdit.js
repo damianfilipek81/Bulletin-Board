@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Form as FormField, Field } from 'react-final-form';
 
 import { connect } from 'react-redux';
-import { getOnePostData, editPost } from '../../../redux/postsRedux';
+import { getOnePostData, fetchEditPost, fetchPost } from '../../../redux/postsRedux';
 
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -17,10 +17,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import styles from './PostEdit.module.scss';
 
-const Component = ({ post, editPost }) => {
-  const { image, title, author, price, creationDate, description, email, id, tel, categories, status } = post;
-  const [dropdownOn, setDropdownOn] = useState(false);
+const Component = ({ post, editPost, fetchPost }) => {
+  useEffect(() => {
+    fetchPost();
+  }, []);
 
+  const { image, title, author, price, creationDate, description, email, _id, tel, categories, status } = post;
+  const [dropdownOn, setDropdownOn] = useState(false);
+  
   const handleSetDropdownOn = () => {
     setDropdownOn(!dropdownOn);
   };
@@ -34,7 +38,7 @@ const Component = ({ post, editPost }) => {
     const { title, description, email, price, phone, status } = values;
 
     const output = {
-      id,
+      _id,
       title,
       author,
       description,
@@ -48,7 +52,7 @@ const Component = ({ post, editPost }) => {
       image: 'https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
     };
 
-    editPost(output).then(window.location.replace(`http://localhost:3000/post/${id}`));
+    editPost(output)
   };
   return (
     <FormField onSubmit={onSubmit}>
@@ -150,14 +154,16 @@ const Component = ({ post, editPost }) => {
 Component.propTypes = {
   post: PropTypes.object,
   editPost: PropTypes.func,
+  fetchPost: PropTypes.func,
 };
 
 const mapStateToProps = (state, props) => ({
   post: getOnePostData(state),
 });
 
-const mapDispatchToProps = dispatch => ({
-  editPost: arg => dispatch(editPost(arg)),
+const mapDispatchToProps = (dispatch, props) => ({
+  editPost: arg => dispatch(fetchEditPost(arg)),
+  fetchPost: () => dispatch(fetchPost(props.match.params.id)),
 });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);

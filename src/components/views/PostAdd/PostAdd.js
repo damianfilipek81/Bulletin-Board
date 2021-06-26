@@ -18,7 +18,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
 import { connect } from 'react-redux';
-import { addPost, getCategories } from '../../../redux/postsRedux';
+import { fetchAddPost, getCategories } from '../../../redux/postsRedux';
 
 import styles from './PostAdd.module.scss';
 
@@ -185,7 +185,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addPost: arg => dispatch(addPost(arg)),
+  addPost: arg => dispatch(fetchAddPost(arg)),
 });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);

@@ -22,7 +22,7 @@ const Component = ({ className, getFilteredCategories }) => {
         <Grid container spacing={3} item xs={9}>
           <div className={styles.products}>
             {getFilteredCategories.map(data =>
-              <PostCard key={data.id} {...data} />
+              <PostCard key={data._id} {...data} />
             )}
           </div>
         </Grid>

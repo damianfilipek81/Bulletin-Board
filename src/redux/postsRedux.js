@@ -70,6 +70,35 @@ export const fetchPost = (id) => {
   };
 };
 
+export const fetchAddPost = (data) => {
+  return (dispatch, getState) => {
+    dispatch(fetchStarted());
+    Axios
+      .post(`http://localhost:8000/api/posts/add`, data)
+      .then(res => {
+        dispatch(addPost(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchError(err.message || true));
+      });
+  };
+};
+
+export const fetchEditPost = (data) => {
+  return (dispatch, getState) => {
+    dispatch(fetchStarted());
+    console.log(data)
+    Axios
+      .put(`http://localhost:8000/api/posts/${data._id}/edit`)
+      .then(res => {
+        dispatch(editPost(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchError(err.message || true));
+      });
+  };
+};
+
 /* reducer */
 export const reducer = (statePart = [], action = {}) => {
   switch (action.type) {
@@ -80,6 +109,8 @@ export const reducer = (statePart = [], action = {}) => {
           products: [
             ...statePart.data.products, action.payload,
           ],
+          categories: [],
+          onePost: {},
         },
       };
     }
@@ -97,6 +128,8 @@ export const reducer = (statePart = [], action = {}) => {
               }
             }),
           ],
+          categories: [],
+          onePost: {},
         },
       };
     }

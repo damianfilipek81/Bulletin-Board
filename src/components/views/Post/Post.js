@@ -25,7 +25,7 @@ const Component = ({ post, user, fetchPost }) => {
     setDropdownOn(!dropdownOn);
   };
 
-  const { image, title, author, price, creationDate, editDate, description, email, id, tel } = post;
+  const { image, title, author, price, creationDate, editDate, description, email, _id, tel } = post;
   const { admin, loggedIn } = user;
   return (
     <div className={styles.root}>
@@ -62,7 +62,7 @@ const Component = ({ post, user, fetchPost }) => {
           </Collapse>
         </div>
       </div>
-      {((loggedIn && user.email === email) || admin) && <Link component={Button} to={`/post/${id}/edit`} color="secondary" className={styles.editButton}>Edit post</Link>}
+      {((loggedIn && user.email === email) || admin) && <Link component={Button} to={`/post/${_id}/edit`} color="secondary" className={styles.editButton}>Edit post</Link>}
     </div>
   );
 };
