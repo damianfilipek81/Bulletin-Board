@@ -87,9 +87,8 @@ export const fetchAddPost = (data) => {
 export const fetchEditPost = (data) => {
   return (dispatch, getState) => {
     dispatch(fetchStarted());
-    console.log(data)
     Axios
-      .put(`http://localhost:8000/api/posts/${data._id}/edit`)
+      .put(`http://localhost:8000/api/posts/${data._id}/edit`, data)
       .then(res => {
         dispatch(editPost(res.data));
       })
@@ -120,7 +119,7 @@ export const reducer = (statePart = [], action = {}) => {
         data: {
           products: [
             ...statePart.data.products.map((data) => {
-              if (data.id === action.payload.id) {
+              if (data._id === action.payload._id) {
                 return action.payload;
               }
               else {
@@ -129,7 +128,7 @@ export const reducer = (statePart = [], action = {}) => {
             }),
           ],
           categories: [],
-          onePost: {},
+          onePost: statePart.data.onePost,
         },
       };
     }

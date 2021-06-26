@@ -18,9 +18,10 @@ import Select from '@material-ui/core/Select';
 import styles from './PostEdit.module.scss';
 
 const Component = ({ post, editPost, fetchPost }) => {
+  const [editFetch, setEditFetch] = useState(null);
   useEffect(() => {
     fetchPost();
-  }, []);
+  }, [editFetch]);
 
   const { image, title, author, price, creationDate, description, email, _id, tel, categories, status } = post;
   const [dropdownOn, setDropdownOn] = useState(false);
@@ -36,7 +37,6 @@ const Component = ({ post, editPost, fetchPost }) => {
 
   const onSubmit = (values) => {
     const { title, description, email, price, phone, status } = values;
-
     const output = {
       _id,
       title,
@@ -51,8 +51,10 @@ const Component = ({ post, editPost, fetchPost }) => {
       editDate: editDate(),
       image: 'https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
     };
-
-    editPost(output)
+    
+    setEditFetch(output);
+    editPost(output);
+    window.location.replace(`http://localhost:3000/post/${_id}`);
   };
   return (
     <FormField onSubmit={onSubmit}>

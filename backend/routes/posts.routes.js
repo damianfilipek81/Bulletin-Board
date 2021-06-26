@@ -43,9 +43,9 @@ router.post('/posts/add', async (req, res) => {
 router.put('/posts/:id/edit', async (req, res) => {
   try {
     const post = await (Post.findById(req.params.id));
-
     if (post) {
-      await Post.updateOne({ _id: req.params.id }, { $set: req.body });
+      const edited = await Post.updateOne({ _id: req.params.id }, { $set: req.body });
+      res.json(edited);
     }
   }
   catch (err) {
