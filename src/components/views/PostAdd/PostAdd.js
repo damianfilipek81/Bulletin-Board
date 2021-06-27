@@ -30,34 +30,44 @@ const Component = ({ addPost, getCategories }) => {
   };
 
   const onSubmit = (values) => {
-    const { title, author, description, email, price, phone, status, categories } = values;
+    const { title, author, description, email, price, phone, status, categories, image } = values;
 
-    const output = {
-      id: uuidv4(),
-      title,
-      author,
-      description,
-      email,
-      price,
-      phone,
-      categories,
-      creationDate: date(),
-      editDate: date(),
-      status,
-      image: 'https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-    };
-    return addPost(output);
+    const data = new FormData();
+    data.append('image', image);
+    // const output = {
+    //   title,
+    //   author,
+    //   description,
+    //   email,
+    //   price,
+    //   phone,
+    //   categories,
+    //   creationDate: date(),
+    //   editDate: date(),
+    //   status,
+    // };
+    data.append('title', title);
+    data.append('author', author);
+    data.append('description', description);
+    data.append('email', email);
+    data.append('price', price);
+    data.append('tel', phone);
+    data.append('categories', categories);
+    data.append('creationDate', date());
+    data.append('editDate', date());
+    data.append('status', status);
+    return addPost(data);
   };
   const required = value => (value ? undefined : 'Required');
   return (
     <div className={styles.root}>
       <h1>Add new post</h1>
-      <FormField onSubmit={onSubmit}>
+      <FormField onSubmit={onSubmit} encType="multipart/form-data">
         {(prop) => (
           <form onSubmit={(e) => {
             prop.handleSubmit(e);
             prop.form.reset();
-          }} >
+          }} encType="multipart/form-data">
             <Field name='author' validate={required}>
               {props => {
                 const { name, value, onChange } = props.input;
@@ -155,7 +165,13 @@ const Component = ({ addPost, getCategories }) => {
               }
             </Field>
             <div className={styles.buttons}>
-              <input accept="image/*" className={styles.input} id="icon-button-file" type="file" />
+              <Field name='image'>
+                {props => {
+                  const { name, onChange } = props.input;
+                  return <input accept="image/*" className={styles.input} id="icon-button-file" type="file" onChange={(e) => onChange(e.target.files[0])} name={name} />;
+                }
+                }
+              </Field>
               <label htmlFor="icon-button-file">
                 <IconButton color="primary" aria-label="upload picture" component="span">
                   <PhotoCamera />

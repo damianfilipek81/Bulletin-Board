@@ -22,6 +22,8 @@ app.use('/api', (req, res) => {
 
 /* REACT WEBSITE */
 app.use(express.static(path.join(__dirname, '../build')));
+app.use(express.static(path.join(__dirname, './uploads')));
+
 app.use('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../build/index.html'));
 });
@@ -37,5 +39,5 @@ db.on('error', err => console.log('Error: ' + err));
 /* START SERVER */
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
-  console.log('Server is running on port: '+port);
+  console.log('Server is running on port: ' + port);
 });

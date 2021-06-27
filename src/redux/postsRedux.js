@@ -27,6 +27,7 @@ const ADD_CATEGORY = createActionName('ADD_CATEGORY');
 const REMOVE_CATEGORY = createActionName('REMOVE_CATEGORY');
 const EDIT_POST = createActionName('EDIT_POST');
 const FETCH_ONE_POST = createActionName('FETCH_ONE_POST');
+const DELETE_POST = createActionName('DELETE_POST');
 
 /* action creators */
 export const fetchStarted = payload => ({ payload, type: FETCH_START });
@@ -37,6 +38,7 @@ export const addCategory = payload => ({ payload, type: ADD_CATEGORY });
 export const removeCategory = payload => ({ payload, type: REMOVE_CATEGORY });
 export const editPost = payload => ({ payload, type: EDIT_POST });
 export const fetchOnePost = payload => ({ payload, type: FETCH_ONE_POST });
+export const deletePost = payload => ({ payload, type: FETCH_ONE_POST });
 
 /* thunk creators */
 export const fetchPublished = () => {
@@ -98,6 +100,20 @@ export const fetchEditPost = (data) => {
   };
 };
 
+export const fetchDeletePost = (id) => {
+  return (dispatch, getState) => {
+    dispatch(fetchStarted());
+    Axios
+      .delete(`http://localhost:8000/api/posts/${id}/delete`)
+      .then(res => {
+        dispatch(deletePost(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchError(err.message || true));
+      });
+  };
+};
+
 /* reducer */
 export const reducer = (statePart = [], action = {}) => {
   switch (action.type) {
@@ -107,6 +123,18 @@ export const reducer = (statePart = [], action = {}) => {
         data: {
           products: [
             ...statePart.data.products, action.payload,
+          ],
+          categories: [],
+          onePost: {},
+        },
+      };
+    }
+    case DELETE_POST: {
+      return {
+        ...statePart,
+        data: {
+          products:[
+            ...statePart.data.products.filter(data => data._id !== action.payload._id),
           ],
           categories: [],
           onePost: {},

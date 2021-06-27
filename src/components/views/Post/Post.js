@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import { fetchPost, getOnePostData } from '../../../redux/postsRedux';
+import { fetchPost, getOnePostData, fetchDeletePost } from '../../../redux/postsRedux';
 import { getAll } from '../../../redux/usersRedux';
 import { Link } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ import Collapse from '@material-ui/core/Collapse';
 
 import styles from './Post.module.scss';
 
-const Component = ({ post, user, fetchPost }) => {
+const Component = ({ post, user, fetchPost, deletePost }) => {
 
   useEffect(() => {
     fetchPost();
@@ -25,6 +25,11 @@ const Component = ({ post, user, fetchPost }) => {
     setDropdownOn(!dropdownOn);
   };
 
+  const handleDeletePost = () => {
+    deletePost();
+    window.location.replace(`http://localhost:3000/`);
+  };
+  
   const { image, title, author, price, creationDate, editDate, description, email, _id, tel } = post;
   const { admin, loggedIn } = user;
   return (
@@ -63,12 +68,14 @@ const Component = ({ post, user, fetchPost }) => {
         </div>
       </div>
       {((loggedIn && user.email === email) || admin) && <Link component={Button} to={`/post/${_id}/edit`} color="secondary" className={styles.editButton}>Edit post</Link>}
+      {((loggedIn && user.email === email) || admin) && <Button color="secondary" onClick={() => handleDeletePost()} className={styles.deleteButton}>Delete post</Button>}
     </div>
   );
 };
 
 Component.propTypes = {
   fetchPost: PropTypes.func,
+  deletePost: PropTypes.func,
   post: PropTypes.object,
   user: PropTypes.object,
 };
@@ -80,6 +87,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, props) => ({
   fetchPost: () => dispatch(fetchPost(props.match.params.id)),
+  deletePost: () => dispatch(fetchDeletePost(props.match.params.id)),
 });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
