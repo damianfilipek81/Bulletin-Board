@@ -3,8 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form as FormField, Field } from 'react-final-form';
 
-import { v4 as uuidv4 } from 'uuid';
-
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Chip from '@material-ui/core/Chip';
@@ -34,18 +32,6 @@ const Component = ({ addPost, getCategories }) => {
 
     const data = new FormData();
     data.append('image', image);
-    // const output = {
-    //   title,
-    //   author,
-    //   description,
-    //   email,
-    //   price,
-    //   phone,
-    //   categories,
-    //   creationDate: date(),
-    //   editDate: date(),
-    //   status,
-    // };
     data.append('title', title);
     data.append('author', author);
     data.append('description', description);

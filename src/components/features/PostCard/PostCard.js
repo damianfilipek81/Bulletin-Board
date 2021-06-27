@@ -10,35 +10,38 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 
 import styles from './PostCard.module.scss';
 
-const Component = ({ title, price, author, date, image, _id }) => (
-  <Link to={`/post/${_id}`} component={CardActionArea}>
-    <div className={styles.root}>
-      <div className={styles.imageWrapper}>
-        <img src={image} alt=''></img>
-      </div>
-      <div className={styles.infoWrapper}>
-        <h3 className={styles.title}>{title}</h3>
-        <h2 className={styles.price}>{price}$</h2>
-      </div>
-      <div className={styles.rightInfoWrapper}>
-        <div className={styles.authorWrapper}>
-          <h4>{author}</h4>
-          <Avatar>{author[0]}</Avatar>
+const Component = ({ title, price, author, date, image, _id }) => {
+  const base = image.data;
+  return (
+    <Link to={`/post/${_id}`} component={CardActionArea}>
+      <div className={styles.root}>
+        <div className={styles.imageWrapper}>
+          <img src={`data:image/jpeg;base64,${base}`} alt=''></img>
         </div>
-        <div className={styles.dateWrapper}>
-          <h5>{date}</h5>
+        <div className={styles.infoWrapper}>
+          <h3 className={styles.title}>{title}</h3>
+          <h2 className={styles.price}>{price}$</h2>
+        </div>
+        <div className={styles.rightInfoWrapper}>
+          <div className={styles.authorWrapper}>
+            <h4>{author}</h4>
+            <Avatar>{author[0]}</Avatar>
+          </div>
+          <div className={styles.dateWrapper}>
+            <h5>{date}</h5>
+          </div>
         </div>
       </div>
-    </div>
-  </Link>
-);
+    </Link >
+  );
+};
 
 Component.propTypes = {
   title: PropTypes.string,
   price: PropTypes.string,
   author: PropTypes.string,
   date: PropTypes.string,
-  image: PropTypes.string,
+  image: PropTypes.object,
   _id: PropTypes.string,
 };
 
