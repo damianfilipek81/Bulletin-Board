@@ -1,4 +1,15 @@
-@import '../../../styles/settings.scss';
+@import "../../../styles/settings.scss";
 
-// .root {
-// }
+.root {
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex-direction: column;
+
+  .products {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: #fff;
+  }
+}

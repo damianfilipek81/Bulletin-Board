@@ -1,35 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
+import { PostCard } from '../../features/PostCard/PostCard';
+import { connect } from 'react-redux';
+import { fetchAll, getAll } from '../../../redux/postsRedux.js';
 
 import styles from './MyPosts.module.scss';
 
-const Component = () => (
-  <div className={styles.root}>
-
-  </div>
-);
-
+const Component = ({ fetchAll, getPosts }) => {
+  useEffect(() => {
+    fetchAll();
+  }, []);
+  return (
+    <div className={styles.root}>
+      <div className={styles.products}>
+        {getPosts.myPosts.map(data =>
+          <PostCard key={data._id} {...data} />
+        )}
+      </div>
+    </div>
+  );
+};
 Component.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string,
+  getPosts: PropTypes.array,
+  fetchAll: PropTypes.func,
 };
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+const mapStateToProps = state => ({
+  getPosts: getAll(state),
+});
 
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
+const mapDispatchToProps = dispatch => ({
+  fetchAll: (arg) => dispatch(fetchAll(arg)),
+});
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
-  Component as MyPosts,
-  // Container as MyPosts,
+  Container as MyPosts,
   Component as MyPostsComponent,
 };

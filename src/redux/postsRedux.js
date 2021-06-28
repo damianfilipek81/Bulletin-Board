@@ -28,6 +28,7 @@ const REMOVE_CATEGORY = createActionName('REMOVE_CATEGORY');
 const EDIT_POST = createActionName('EDIT_POST');
 const FETCH_ONE_POST = createActionName('FETCH_ONE_POST');
 const DELETE_POST = createActionName('DELETE_POST');
+const FETCH_ALL_POSTS = createActionName('FETCH_ALL_POSTS');
 
 /* action creators */
 export const fetchStarted = payload => ({ payload, type: FETCH_START });
@@ -39,6 +40,7 @@ export const removeCategory = payload => ({ payload, type: REMOVE_CATEGORY });
 export const editPost = payload => ({ payload, type: EDIT_POST });
 export const fetchOnePost = payload => ({ payload, type: FETCH_ONE_POST });
 export const deletePost = payload => ({ payload, type: FETCH_ONE_POST });
+export const fetchAllPosts = payload => ({ payload, type: FETCH_ALL_POSTS });
 
 /* thunk creators */
 export const fetchPublished = () => {
@@ -55,6 +57,21 @@ export const fetchPublished = () => {
           dispatch(fetchError(err.message || true));
         });
     }
+  };
+};
+
+export const fetchAll = (data) => {
+  return (dispatch, getState) => {
+    dispatch(fetchStarted());
+
+    Axios
+      .get('http://localhost:8000/api/posts/myPosts', data)
+      .then(res => {
+        dispatch(fetchAllPosts(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchError(err.message || true));
+      });
   };
 };
 
@@ -125,6 +142,7 @@ export const reducer = (statePart = [], action = {}) => {
             ...statePart.data.products, action.payload,
           ],
           categories: [],
+          myPosts: [],
           onePost: {},
         },
       };
@@ -133,10 +151,11 @@ export const reducer = (statePart = [], action = {}) => {
       return {
         ...statePart,
         data: {
-          products:[
+          products: [
             ...statePart.data.products.filter(data => data._id !== action.payload._id),
           ],
           categories: [],
+          myPosts: [],
           onePost: {},
         },
       };
@@ -156,6 +175,7 @@ export const reducer = (statePart = [], action = {}) => {
             }),
           ],
           categories: [],
+          myPosts: [],
           onePost: statePart.data.onePost,
         },
       };
@@ -203,6 +223,22 @@ export const reducer = (statePart = [], action = {}) => {
         data: {
           products: action.payload,
           categories: [],
+          myPosts: [],
+          onePost: statePart.data.onePost,
+        },
+      };
+    }
+    case FETCH_ALL_POSTS: {
+      return {
+        ...statePart,
+        loading: {
+          active: false,
+          error: false,
+        },
+        data: {
+          myPosts: action.payload,
+          categories: [],
+          products: [],
           onePost: statePart.data.onePost,
         },
       };

@@ -25,7 +25,6 @@ export const fetchUser = () => {
     Axios
       .get('http://localhost:8000/user/logged')
       .then(res => {
-        console.log(res.data);
         dispatch(changeUser(res.data));
       })
       .catch(err => {

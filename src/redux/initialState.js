@@ -4,6 +4,7 @@ export const initialState = {
       products: [],
       categories: [],
       onePost: {},
+      myPosts: [],
     },
     loading: {
       active: false,

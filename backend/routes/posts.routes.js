@@ -15,21 +15,23 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-
-const isLogged = (req, res, next) => {
-  if (req.user === undefined) {
-    res.redirect('/user/no-permission');
-  } else {
-    next();
-  }
-};
-
 router.get('/posts', async (req, res) => {
   try {
     const result = await Post
       .find({ status: 'published' });
     // .select('author created title photo')
     // .sort({created: -1});
+    if (!result) res.status(404).json({ post: 'Not found' });
+    else res.json(result);
+  }
+  catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.get('/posts/myPosts', async (req, res) => {
+  try {
+    const result = await Post.find({email: req.user._json.email});
     if (!result) res.status(404).json({ post: 'Not found' });
     else res.json(result);
   }

@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 
 import styles from './SearchResults.module.scss';
 import Avatar from '@material-ui/core/Avatar';
-import { Link } from 'react-router-dom';
 
 const Component = ({ results }) => (
   <div className={styles.root}>
     {results.map(result =>
-      <Link key={result.id} to={`/post/${result.id}`} className={styles.wrapper}>
+      <a key={result._id} href={`/post/${result._id}`} className={styles.wrapper}>
         <div className={styles.imageWrapper}>
           {result.image !== undefined && <img src={`data:image/jpeg;base64,${result.image.data}`} alt=''></img>}
         </div>
@@ -22,7 +21,7 @@ const Component = ({ results }) => (
             <Avatar>{result.author[0]}</Avatar>
           </div>
         </div>
-      </Link>
+      </a>
     )}
   </div>
 );

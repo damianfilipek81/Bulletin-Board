@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('express-session');
 const passportConfig = require('./config/passport');
+require('dotenv').config();
 
 const postsRoutes = require('./routes/posts.routes');
 const usersRoutes = require('./routes/user.routes');
@@ -44,7 +45,7 @@ app.use('*', (req, res) => {
 });
 
 /* MONGOOSE */
-mongoose.connect('mongodb://localhost:27017/bulletinBoard', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.lzufo.mongodb.net/bulletBoardDB?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.once('open', () => {
   console.log('Successfully connected to the database');
