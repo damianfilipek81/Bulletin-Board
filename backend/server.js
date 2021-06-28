@@ -14,12 +14,6 @@ const authRoutes = require('./routes/auth.routes');
 
 const app = express();
 
-try {
-  fs.mkdirSync(path.join(__dirname, '/uploads/'));
-} catch (err) {
-  if (err.code !== 'EEXIST') throw err;
-}
-
 /* MIDDLEWARE */
 app.use(session({
   secret: 'deliciousCookie',
@@ -32,6 +26,12 @@ app.use(passport.session());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+try {
+  fs.mkdirSync(path.join(__dirname, '/uploads/'));
+} catch (err) {
+  if (err.code !== 'EEXIST') throw err;
+}
 
 /* API ENDPOINTS */
 app.use('/api', postsRoutes);
