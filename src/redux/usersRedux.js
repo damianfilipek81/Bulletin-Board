@@ -1,4 +1,6 @@
 /* eslint-disable linebreak-style */
+import { USER_URL } from '../config';
+
 import Axios from 'axios';
 
 /* selectors */
@@ -23,7 +25,7 @@ export const fetchUser = () => {
     dispatch(fetchStarted());
 
     Axios
-      .get('http://localhost:8000/user/logged')
+      .get(`${USER_URL}/logged`)
       .then(res => {
         dispatch(changeUser(res.data));
       })

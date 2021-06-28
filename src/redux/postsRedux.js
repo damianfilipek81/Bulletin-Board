@@ -1,3 +1,5 @@
+import { API_URL } from '../config';
+
 import Axios from 'axios';
 
 /* selectors */
@@ -49,7 +51,7 @@ export const fetchPublished = () => {
       dispatch(fetchStarted());
 
       Axios
-        .get('http://localhost:8000/api/posts')
+        .get(`${API_URL}/posts`)
         .then(res => {
           dispatch(fetchSuccess(res.data));
         })
@@ -65,7 +67,7 @@ export const fetchAll = (data) => {
     dispatch(fetchStarted());
 
     Axios
-      .get('http://localhost:8000/api/posts/myPosts', data)
+      .get(`${API_URL}/posts/myPosts`, data)
       .then(res => {
         dispatch(fetchAllPosts(res.data));
       })
@@ -79,7 +81,7 @@ export const fetchPost = (id) => {
   return (dispatch, getState) => {
     dispatch(fetchStarted());
     Axios
-      .get(`http://localhost:8000/api/posts/${id}`)
+      .get(`${API_URL}/posts/${id}`)
       .then(res => {
         dispatch(fetchOnePost(res.data));
       })
@@ -93,7 +95,7 @@ export const fetchAddPost = (data) => {
   return (dispatch, getState) => {
     dispatch(fetchStarted());
     Axios
-      .post(`http://localhost:8000/api/posts/add`, data)
+      .post(`${API_URL}/posts/add`, data)
       .then(res => {
         dispatch(addPost(res.data));
       })
@@ -107,7 +109,7 @@ export const fetchEditPost = (data) => {
   return (dispatch, getState) => {
     dispatch(fetchStarted());
     Axios
-      .put(`http://localhost:8000/api/posts/${data._id}/edit`, data)
+      .put(`${API_URL}/posts/${data._id}/edit`, data)
       .then(res => {
         dispatch(editPost(res.data));
       })
@@ -121,7 +123,7 @@ export const fetchDeletePost = (id) => {
   return (dispatch, getState) => {
     dispatch(fetchStarted());
     Axios
-      .delete(`http://localhost:8000/api/posts/${id}/delete`)
+      .delete(`${API_URL}/posts/${id}/delete`)
       .then(res => {
         dispatch(deletePost(res.data));
       })
