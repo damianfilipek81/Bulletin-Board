@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "run-p start:* ",
+    "start": "node backend/server.js",
     "start:backend": "npx nodemon backend/server.js",
     "start-silent": "run-p start > /dev/null",
     "start:react": "react-scripts start",
