@@ -6,6 +6,7 @@ const passport = require('passport');
 const session = require('express-session');
 const passportConfig = require('./config/passport');
 require('dotenv').config();
+const fs = require('fs');
 
 const postsRoutes = require('./routes/posts.routes');
 const usersRoutes = require('./routes/user.routes');
@@ -43,6 +44,12 @@ app.use(express.static(path.join(__dirname, './uploads')));
 app.use('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../build/index.html'));
 });
+
+try {
+  fs.mkdirSync(path.join(__dirname, '/backend/uploads/'));
+} catch (err) {
+  if (err.code !== 'EEXIST') throw err;
+}
 
 /* MONGOOSE */
 mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.lzufo.mongodb.net/bulletBoardDB?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true });
