@@ -5,18 +5,14 @@ import { Link } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import CardActionArea from '@material-ui/core/CardActionArea';
 
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
-
 import styles from './PostCard.module.scss';
 
 const Component = ({ title, price, author, date, image, _id }) => {
-  const base = image.data;
   return (
     <Link to={`/post/${_id}`} component={CardActionArea}>
       <div className={styles.root}>
         <div className={styles.imageWrapper}>
-          <img src={`data:image/jpeg;base64,${base}`} alt=''></img>
+          {image !== undefined && <img src={`data:image/jpeg;base64,${image.data}`} alt=''></img>}
         </div>
         <div className={styles.infoWrapper}>
           <h3 className={styles.title}>{title}</h3>
@@ -45,18 +41,7 @@ Component.propTypes = {
   _id: PropTypes.string,
 };
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
-
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
-
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
-
 export {
   Component as PostCard,
-  // Container as PostCard,
   Component as PostCardComponent,
 };

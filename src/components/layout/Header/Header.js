@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { SearchBar } from '../../features/SearchBar/SearchBar';
 import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
-import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -13,10 +12,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import styles from './Header.module.scss';
 
 import { connect } from 'react-redux';
-import { changeUser, getAll } from '../../../redux/usersRedux';
+import { getAll } from '../../../redux/usersRedux';
 
-const Component = ({ changeUser, getUser }) => {
-  const [user, setUser] = useState('loggedIn');
+const Component = ({ getUser }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -25,11 +23,6 @@ const Component = ({ changeUser, getUser }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleChangeUser = (e) => {
-    setUser(e.target.value);
-    changeUser(e.target.value);
   };
 
 
@@ -42,16 +35,7 @@ const Component = ({ changeUser, getUser }) => {
           </div>
           <SearchBar />
           <div className={styles.wrapper}>
-            <Select
-              native
-              value={user}
-              onChange={(e) => handleChangeUser(e)}
-            >
-              <option value={'loggedOut'}>Logged out</option>
-              <option value={'loggedIn'}>Logged in</option>
-              <option value={'admin'}>Admin</option>
-            </Select>
-            {(getUser.loggedIn === true || getUser.admin === true) ?
+            {getUser.logged ?
               <div>
                 <Button variant="contained" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                   Menu
@@ -64,13 +48,13 @@ const Component = ({ changeUser, getUser }) => {
                   onClose={handleClose}
                   autoFocus={false}
                 >
-                  {(getUser.loggedIn === true || getUser.admin === true) && <MenuItem><Link to='/post/add' onClick={handleClose}>New post</Link></MenuItem>}
-                  {(getUser.loggedIn === true || getUser.admin === true) && <MenuItem><Link to={`/posts/my-posts`} onClick={handleClose}>My posts</Link></MenuItem>}
-                  {(getUser.loggedIn === true || getUser.admin === true) && <MenuItem><Link to={`/`} onClick={handleClose}>Logout</Link></MenuItem>}
+                  {<MenuItem><Link to='/post/add' onClick={handleClose}>New post</Link></MenuItem>}
+                  {<MenuItem><Link to={'/posts/my-posts'} onClick={handleClose}>My posts</Link></MenuItem>}
+                  {<MenuItem><a href={'/auth/logout'}>Logout</a></MenuItem>}
                 </Menu>
               </div>
               :
-              <Link variant="contained" component={Button} to={{ pathname: 'https://google.com' }} target="_blank">Login</Link>
+              <Link variant="contained" component={Button} to={'/auth/google'}>Login</Link>
             }
           </div>
 
@@ -81,7 +65,7 @@ const Component = ({ changeUser, getUser }) => {
 };
 
 Component.propTypes = {
-  changeUser: PropTypes.func,
+  fetchUser: PropTypes.func,
   getUser: PropTypes.object,
 };
 
@@ -89,11 +73,8 @@ const mapStateToProps = state => ({
   getUser: getAll(state),
 });
 
-const mapDispatchToProps = dispatch => ({
-  changeUser: arg => dispatch(changeUser(arg)),
-});
 
-const ContainerFunc = connect(mapStateToProps, mapDispatchToProps)(Component);
+const ContainerFunc = connect(mapStateToProps)(Component);
 
 export {
   ContainerFunc as Header,

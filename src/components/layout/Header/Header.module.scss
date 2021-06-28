@@ -7,26 +7,26 @@
   width: 100%;
   z-index: 999;
 
-  .toolbar{
+  .toolbar {
     padding: 0;
     display: flex;
     justify-content: space-between;
   }
 
-  .logo{
+  .logo {
     font-family: $logoFont;
     margin: 0;
     font-size: 40px;
-    color: 	rgb(255,215,0);
+    color: rgb(255, 215, 0);
     text-decoration: none;
   }
 
-  .wrapper{
+  .wrapper {
     flex: 0 0 33.333%;
     padding-right: 10px;
   }
 
-  .wrapper:last-of-type{
+  .wrapper:last-of-type {
     display: flex;
     justify-content: flex-end;
   }

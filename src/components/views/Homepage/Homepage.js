@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { PostCard } from '../../features/PostCard/PostCard';
 import { SideMenu } from '../../features/SideMenu/SideMenu';
@@ -12,7 +12,7 @@ import { getFilteredCategories } from '../../../redux/postsRedux';
 import styles from './Homepage.module.scss';
 
 const Component = ({ className, getFilteredCategories }) => {
-
+  
   return (
     <div className={clsx(className, styles.root)}>
       <div className={styles.wrapper}>

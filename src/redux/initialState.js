@@ -11,10 +11,10 @@ export const initialState = {
     },
   },
   users: {
-    loggedOut: false,
-    loggedIn: true,
-    admin: false,
-    email: 'damianfilipek@gmail.com',
+    logged: false,
+    email: '',
+    id: '',
+    name: '',
   },
   searchString: '',
 };

@@ -27,15 +27,15 @@ const Component = ({ post, user, fetchPost, deletePost }) => {
 
   const handleDeletePost = () => {
     deletePost();
-    window.location.replace(`http://localhost:3000/`);
   };
-  
-  const { image, title, author, price, creationDate, editDate, description, email, _id, tel } = post;
-  const { admin, loggedIn } = user;
+
+  const { title, author, price, creationDate, editDate, description, email, _id, tel } = post;
+  const { logged } = user;
+
   return (
     <div className={styles.root}>
       <div className={styles.imageWrapper}>
-        <img src={image} alt=''></img>
+        {post.image !== undefined && <img src={`data:image/jpeg;base64,${post.image.data}`} alt=''></img>}
       </div>
       <div className={styles.wrapper}>
         <div>
@@ -67,8 +67,8 @@ const Component = ({ post, user, fetchPost, deletePost }) => {
           </Collapse>
         </div>
       </div>
-      {((loggedIn && user.email === email) || admin) && <Link component={Button} to={`/post/${_id}/edit`} color="secondary" className={styles.editButton}>Edit post</Link>}
-      {((loggedIn && user.email === email) || admin) && <Button color="secondary" onClick={() => handleDeletePost()} className={styles.deleteButton}>Delete post</Button>}
+      {(logged && user.email === email) && <Link component={Button} to={`/post/${_id}/edit`} color="secondary" className={styles.editButton}>Edit post</Link>}
+      {(logged && user.email === email) && <Button color="secondary" onClick={() => handleDeletePost()} className={styles.deleteButton}>Delete post</Button>}
     </div>
   );
 };

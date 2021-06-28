@@ -9,7 +9,9 @@ const Component = ({ results }) => (
   <div className={styles.root}>
     {results.map(result =>
       <Link key={result.id} to={`/post/${result.id}`} className={styles.wrapper}>
-        <div className={styles.imageWrapper}><img src={result.image} alt=''></img></div>
+        <div className={styles.imageWrapper}>
+          {result.image !== undefined && <img src={`data:image/jpeg;base64,${result.image.data}`} alt=''></img>}
+        </div>
         <div className={styles.infoWrapper}>
           <div className={styles.leftInfo}>
             <h4>{result.title}</h4>

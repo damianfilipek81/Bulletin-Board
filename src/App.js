@@ -6,6 +6,7 @@ import { CssBaseline } from '@material-ui/core';
 
 import { MainLayout } from './components/layout/MainLayout/MainLayout';
 import { Homepage } from './components/views/Homepage/Homepage';
+import { NoPermission } from './components/views/NoPermission/NoPermission';
 import { Post } from './components/views/Post/Post';
 import { MyPosts } from './components/views/MyPosts/MyPosts';
 import { PostEdit } from './components/views/PostEdit/PostEdit';
@@ -23,7 +24,7 @@ const theme = createMuiTheme({
 });
 
 const App = ({ getUser }) => {
-  const { admin, loggedIn } = getUser;
+  const {logged } = getUser;
 
   return (
     <BrowserRouter>
@@ -33,10 +34,11 @@ const App = ({ getUser }) => {
           <MainLayout>
             <Switch>
               <Route exact path='/' component={Homepage} />
-              <Route exact path='/post/add' component={admin === true || loggedIn === true ? PostAdd : NotFound} />
+              <Route exact path='/post/add' component={logged ? PostAdd : NoPermission} />
               <Route exact path='/post/:id' component={Post} />
-              <Route exact path='/post/:id/edit' component={admin === true || loggedIn === true ? PostEdit : NotFound} />
-              <Route exact path='/posts/my-posts' component={admin === true || loggedIn === true ? MyPosts : NotFound} />
+              <Route exact path='/post/:id/edit' component={logged ? PostEdit : NoPermission} />
+              <Route exact path='/posts/my-posts' component={logged ? MyPosts : NoPermission} />
+              <Route exact path='/user/no-permission' component={NoPermission} />
               <Route path='*' component={NotFound} />
             </Switch>
           </MainLayout>

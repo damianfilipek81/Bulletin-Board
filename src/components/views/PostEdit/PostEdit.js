@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
+
 import PropTypes from 'prop-types';
 import { Form as FormField, Field } from 'react-final-form';
 
@@ -25,7 +26,7 @@ const Component = ({ post, editPost, fetchPost }) => {
 
   const { image, title, author, price, creationDate, description, email, _id, tel, categories, status } = post;
   const [dropdownOn, setDropdownOn] = useState(false);
-  
+
   const handleSetDropdownOn = () => {
     setDropdownOn(!dropdownOn);
   };
@@ -49,12 +50,11 @@ const Component = ({ post, editPost, fetchPost }) => {
       creationDate,
       status,
       editDate: editDate(),
-      image: 'https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+      image,
     };
-    
+
     setEditFetch(output);
     editPost(output);
-    window.location.replace(`http://localhost:3000/post/${_id}`);
   };
   return (
     <FormField onSubmit={onSubmit}>
@@ -63,7 +63,7 @@ const Component = ({ post, editPost, fetchPost }) => {
           prop.handleSubmit(e);
         }} >
           <div className={styles.imageWrapper}>
-            <img src={image} alt=''></img>
+            {post.image !== undefined && <img src={`data:image/jpeg;base64,${post.image.data}`} alt=''></img>}
           </div>
           <div className={styles.wrapper}>
             <div>

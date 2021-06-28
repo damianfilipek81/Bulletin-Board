@@ -6,6 +6,7 @@ const postSchema = new mongoose.Schema({
   editDate: { type: String, required: true },
   status: { type: String, required: true },
   title: { type: String, required: true },
+  email: { type: String, required: true },
   description: { type: String, required: true },
   categories: { type: Array },
   image: { type: Object},

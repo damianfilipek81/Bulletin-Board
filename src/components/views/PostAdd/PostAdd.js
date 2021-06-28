@@ -17,10 +17,11 @@ import Select from '@material-ui/core/Select';
 
 import { connect } from 'react-redux';
 import { fetchAddPost, getCategories } from '../../../redux/postsRedux';
+import { getAll } from '../../../redux/usersRedux';
 
 import styles from './PostAdd.module.scss';
 
-const Component = ({ addPost, getCategories }) => {
+const Component = ({ addPost, getCategories, getUser }) => {
 
   const date = () => {
     const date = new Date();
@@ -28,14 +29,14 @@ const Component = ({ addPost, getCategories }) => {
   };
 
   const onSubmit = (values) => {
-    const { title, author, description, email, price, phone, status, categories, image } = values;
+    const { title, description, price, phone, status, categories, image } = values;
 
     const data = new FormData();
     data.append('image', image);
     data.append('title', title);
-    data.append('author', author);
+    data.append('author', getUser.name);
     data.append('description', description);
-    data.append('email', email);
+    data.append('email', getUser.email);
     data.append('price', price);
     data.append('tel', phone);
     data.append('categories', categories);
@@ -45,6 +46,7 @@ const Component = ({ addPost, getCategories }) => {
     return addPost(data);
   };
   const required = value => (value ? undefined : 'Required');
+
   return (
     <div className={styles.root}>
       <h1>Add new post</h1>
@@ -54,20 +56,11 @@ const Component = ({ addPost, getCategories }) => {
             prop.handleSubmit(e);
             prop.form.reset();
           }} encType="multipart/form-data">
-            <Field name='author' validate={required}>
-              {props => {
-                const { name, value, onChange } = props.input;
-                return <TextField name={name} value={value} onChange={onChange} label="Your name" variant="outlined" />;
-              }
-              }
-            </Field>
-            <Field name='email' validate={required}>
-              {props => {
-                const { name, value, onChange } = props.input;
-                return <TextField name={name} value={value} onChange={onChange} label="Your email" type="email" variant="outlined" />;
-              }
-              }
-            </Field>
+
+            <TextField value={getUser.name} disabled variant="outlined" />
+
+            <TextField value={getUser.email} disabled type="email" variant="outlined" />
+
             <Field name='phone' validate={required}>
               {props => {
                 const { name, value, onChange } = props.input;
@@ -180,10 +173,12 @@ const Component = ({ addPost, getCategories }) => {
 Component.propTypes = {
   addPost: PropTypes.func,
   getCategories: PropTypes.array,
+  getUser: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
   getCategories: [...new Set(getCategories(state))],
+  getUser: getAll(state),
 });
 
 const mapDispatchToProps = dispatch => ({
